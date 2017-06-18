@@ -142,13 +142,25 @@ namespace View
             SqlConnection conn = new SqlConnection(connstr);
             conn.Open();
             Console.WriteLine(user.PhoneNumber);
-          //  int phoneNumber = Convert.ToInt32(user.PhoneNumber);
+            //  int phoneNumber = Convert.ToInt32(user.PhoneNumber);
             //string query = "INSERT INTO RESERVEDEMO (FullName,VoterID,Occupation,DateOfBirth,PhoneNumber) VALUES ( " +
             //    " +fullNameTextBox.Text+","+voterIDTextBox.Text+","+ ocuupationTextBox.Text+","+ );";
 
-            string query = "INSERT INTO RESERVEDEMO (FullName, VoterID,Occupation,DateOfBirth, PhoneNumber) VALUES ('" + fullNameTextBox.Text + "','" + voterIDTextBox.Text + "','" + ocuupationTextBox.Text + "','" + dateOfBirthPicker.Text + "','" + phoneNumberTextBox.Text + "')";
+            string query = "INSERT INTO Reservedemo (FullName, VoterID,Occupation,DateOfBirth, PhoneNumber) VALUES (@FullName,@VoterID,@Occupation,@DateOfBirth,@PhoneNumber)";
+
+            // 
+            //string query = "INSERT INTO RESERVEDEMO (FullName, VoterID,Occupation,DateOfBirth, PhoneNumber) VALUES ('" + fullNameTextBox.Text + "','" + voterIDTextBox.Text + "','" + ocuupationTextBox.Text + "','" + dateOfBirthPicker.Text + "','" + phoneNumberTextBox.Text + "')";
+           
+
             //     INSERT INTO TABLE_NAME(column1, column2, column3,...columnN) VALUES(value1, value2, value3,...valueN);
             SqlCommand cmd = new SqlCommand(query, conn);
+
+            
+            cmd.Parameters.AddWithValue("@FullName", fullNameTextBox.Text);
+            cmd.Parameters.AddWithValue("@VoterID", voterIDTextBox.Text);
+            cmd.Parameters.AddWithValue("@Occupation", ocuupationTextBox.Text);
+            cmd.Parameters.AddWithValue("@DateOfBirth", dateOfBirthPicker.Text);
+            cmd.Parameters.AddWithValue("@PhoneNumber", phoneNumberTextBox.Text);
 
             var check = cmd.ExecuteNonQuery();
 
