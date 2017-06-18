@@ -47,7 +47,7 @@ namespace Controller
         {
             _selectedUser = new Data("",
                                     "" ,
-                                    ""  ,
+                                    "" ,
                                     "" ,
                                     "" );
             updateUserWithViewValues(_selectedUser);

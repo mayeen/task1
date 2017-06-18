@@ -2,21 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace Model
 {
     public class Data
     {
+        
+        //private void connection()
+        //{
+        //    con = new SqlConnection("Data Source=./;Initial Catalog=demo;User ID=sa;Password=ddm@TT");
+            
+        //}
         private string _FullName;
         public string FullName
         {
             get { return _FullName; }
             set
             {
-                if (value.Length  >20)
+                if (value.Length > 20)
                     Console.WriteLine("Error! Fullname must be less than 21 characters!");
                 else
+
+
                     _FullName = value;
             }
         }

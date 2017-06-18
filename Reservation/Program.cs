@@ -7,7 +7,7 @@ using Model;
 using View;
 using Controller;
 using System.Collections;
-
+using System.Data.SqlClient;
 
 namespace Reservation
 {
@@ -21,6 +21,31 @@ namespace Reservation
         {
             UserView view = new UserView();
             view.Visible = false;
+            //string connectionString = "Data Source=./;Initial Catalog=demo;Persist Security Info=True;User ID=sa;Password=ddm@TT";
+            //SqlConnection conn = new SqlConnection(connectionString);
+
+            //conn.Open();
+            //string query = "SELECT * FROM reserveDemo;";
+            //SqlCommand cmd = new SqlCommand(query,conn);
+
+            //SqlDataReader reader = cmd.ExecuteReader();
+
+            //if (reader.HasRows)
+            //{
+            //    while (reader.Read())
+            //    {
+            //        Console.WriteLine("{0}\t{1}", reader.GetInt32(0), reader.GetString(1));
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("No rows found.");
+            //}
+            //reader.Close();
+            //Console.ReadKey();
+
+            //UserView view = new UserView();
+            //view.Visible = false;
 
             // Add some dummy data
             IList users = new ArrayList();

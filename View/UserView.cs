@@ -9,11 +9,34 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Controller;
 using Model;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace View
 {
     public partial class UserView : Form, IUserView
     {
+        //string connstr = Reservation.Utility.GetConnectionString();
+        //connection string er method
+        internal static string GetConnectionString()
+        {
+            //Util-2 Assume failure.  
+            string returnValue = null;
+
+            //Util-3 Look for the name in the connectionStrings section.  
+            //ConnectionStringSettings settings =
+            //ConfigurationManager.ConnectionStrings["Reservation.Properties.Settings.connString"];
+            string settings = "Data Source=./;Initial Catalog=demo;Persist Security Info=True;User ID=sa;Password=ddm@TT";
+
+            //If found, return the connection string.  
+            //if (settings != null)
+            //    returnValue = settings.ConnectionString;
+
+            return settings;
+        }
+        string connstr = UserView.GetConnectionString();
+
+
         public UserView()
         {
             InitializeComponent();
@@ -76,7 +99,7 @@ namespace View
 
             set
             {
-                this.ocuupationTextBox.Text = value;
+                this.phoneNumberTextBox.Text = value;
             }
         }
 
@@ -114,6 +137,25 @@ namespace View
             parent.SubItems.Add(user.Occupation);
             parent.SubItems.Add(user.DateOfBirth);
             parent.SubItems.Add(user.PhoneNumber);
+
+            //inserting into database
+            SqlConnection conn = new SqlConnection(connstr);
+            conn.Open();
+            Console.WriteLine(user.PhoneNumber);
+          //  int phoneNumber = Convert.ToInt32(user.PhoneNumber);
+            //string query = "INSERT INTO RESERVEDEMO (FullName,VoterID,Occupation,DateOfBirth,PhoneNumber) VALUES ( " +
+            //    " +fullNameTextBox.Text+","+voterIDTextBox.Text+","+ ocuupationTextBox.Text+","+ );";
+
+            string query = "INSERT INTO RESERVEDEMO (FullName, VoterID,Occupation,DateOfBirth, PhoneNumber) VALUES ('" + fullNameTextBox.Text + "','" + voterIDTextBox.Text + "','" + ocuupationTextBox.Text + "','" + dateOfBirthPicker.Text + "','" + phoneNumberTextBox.Text + "')";
+            //     INSERT INTO TABLE_NAME(column1, column2, column3,...columnN) VALUES(value1, value2, value3,...valueN);
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            var check = cmd.ExecuteNonQuery();
+
+
+            conn.Close();
+
+
         }
 
        
