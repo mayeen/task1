@@ -55,6 +55,7 @@ namespace Controller
             // Add new user
             this._users.Add(_selectedUser);
             this._view.AddUserToGrid(_selectedUser);
+       
    
 
         }

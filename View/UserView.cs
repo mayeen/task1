@@ -34,7 +34,8 @@ namespace View
 
             return settings;
         }
-        string connstr = UserView.GetConnectionString();
+      
+        SqlConnection conn = new SqlConnection(UserView.GetConnectionString());
 
 
         public UserView()
@@ -137,11 +138,49 @@ namespace View
             parent.SubItems.Add(user.Occupation);
             parent.SubItems.Add(user.DateOfBirth);
             parent.SubItems.Add(user.PhoneNumber);
+            DisplayData();
+        }
+        //Display Data in DataGridView  
+        public void DisplayData()
+        {
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT FullName, VoterID, Occupation, DateOfBirth, PhoneNumber FROM Reservedemo", conn);
+            SqlDataReader objRead = cmd.ExecuteReader();
+            this.gridOrders.Items.Clear();
+            while (objRead.Read())
+            {
+                ListViewItem parent;
+                parent = this.gridOrders.Items.Add(objRead["FullName"].ToString());
+                parent.SubItems.Add(objRead["VoterID"].ToString());
+                parent.SubItems.Add(objRead["Occupation"].ToString());
+                parent.SubItems.Add(objRead["DateOfBirth"].ToString());
+                parent.SubItems.Add(objRead["PhoneNumber"].ToString());
+            }
+
+                conn.Close();
+        }
+
+
+        public void SetController(Controller.UserController controller)
+        {
+            _controller = controller;
+            
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void submitButton_Click(object sender, EventArgs e)
+        {
+            this._controller.Save();
 
             //inserting into database
-            SqlConnection conn = new SqlConnection(connstr);
+           
             conn.Open();
-            Console.WriteLine(user.PhoneNumber);
+            
             //  int phoneNumber = Convert.ToInt32(user.PhoneNumber);
             //string query = "INSERT INTO RESERVEDEMO (FullName,VoterID,Occupation,DateOfBirth,PhoneNumber) VALUES ( " +
             //    " +fullNameTextBox.Text+","+voterIDTextBox.Text+","+ ocuupationTextBox.Text+","+ );";
@@ -150,12 +189,12 @@ namespace View
 
             // 
             //string query = "INSERT INTO RESERVEDEMO (FullName, VoterID,Occupation,DateOfBirth, PhoneNumber) VALUES ('" + fullNameTextBox.Text + "','" + voterIDTextBox.Text + "','" + ocuupationTextBox.Text + "','" + dateOfBirthPicker.Text + "','" + phoneNumberTextBox.Text + "')";
-           
+
 
             //     INSERT INTO TABLE_NAME(column1, column2, column3,...columnN) VALUES(value1, value2, value3,...valueN);
             SqlCommand cmd = new SqlCommand(query, conn);
 
-            
+
             cmd.Parameters.AddWithValue("@FullName", fullNameTextBox.Text);
             cmd.Parameters.AddWithValue("@VoterID", voterIDTextBox.Text);
             cmd.Parameters.AddWithValue("@Occupation", ocuupationTextBox.Text);
@@ -167,24 +206,6 @@ namespace View
 
             conn.Close();
 
-
-        }
-
-       
-
-        public void SetController(Controller.UserController controller)
-        {
-            _controller = controller;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void submitButton_Click(object sender, EventArgs e)
-        {
-            this._controller.Save();
         }
 
         private void gridOrders_SelectedIndexChanged(object sender, EventArgs e)

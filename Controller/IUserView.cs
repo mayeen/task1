@@ -14,6 +14,7 @@ namespace Controller
         void SetController(UserController controller);
         void ClearGrid();
         void AddUserToGrid(Data user);
+        //void DisplayData();
 
         string FullName { get; set; }
         string VoterID { get; set; }
