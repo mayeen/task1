@@ -49,9 +49,9 @@ namespace Reservation
 
             // Add some dummy data
             IList users = new ArrayList();
-            users.Add(new Data("Kazi Mostafa Shahriar", "Rafi", "122", "gmail", "Dhaka"));
-            users.Add(new Data("Nazmul Hasan", "Mostofa", "123", "gmail", "USA"));
-            users.Add(new Data("Refat", "Harper", "124", "gmail", "Canada"));
+          //  users.Add(new Data("Kazi Mostafa Shahriar", "Rafi", "122", "gmail", "Dhaka"));
+           // users.Add(new Data("Nazmul Hasan", "Mostofa", "123", "gmail", "USA"));
+           // users.Add(new Data("Refat", "Harper", "124", "gmail", "Canada"));
 
             UserController controller = new UserController(view, users);
 

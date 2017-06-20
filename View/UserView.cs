@@ -41,6 +41,8 @@ namespace View
         public UserView()
         {
             InitializeComponent();
+
+            
         }
         UserController _controller;
 
@@ -145,7 +147,7 @@ namespace View
         {
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT FullName, VoterID, Occupation, DateOfBirth, PhoneNumber FROM Reservedemo", conn);
+            SqlCommand cmd = new SqlCommand("SELECT FullName, VoterID, Occupation, DateOfBirth, PhoneNumber FROM Reservedemos", conn);
             SqlDataReader objRead = cmd.ExecuteReader();
             this.gridOrders.Items.Clear();
             while (objRead.Read())
@@ -172,6 +174,12 @@ namespace View
         {
 
         }
+        //private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        //{
+        //    ID = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+        //    txt_Name.Text = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
+        //    txt_State.Text = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+        //}
 
         private void submitButton_Click(object sender, EventArgs e)
         {
@@ -185,7 +193,7 @@ namespace View
             //string query = "INSERT INTO RESERVEDEMO (FullName,VoterID,Occupation,DateOfBirth,PhoneNumber) VALUES ( " +
             //    " +fullNameTextBox.Text+","+voterIDTextBox.Text+","+ ocuupationTextBox.Text+","+ );";
 
-            string query = "INSERT INTO Reservedemo (FullName, VoterID,Occupation,DateOfBirth, PhoneNumber) VALUES (@FullName,@VoterID,@Occupation,@DateOfBirth,@PhoneNumber)";
+            string query = "INSERT INTO Reservedemos (FullName, VoterID,Occupation,DateOfBirth, PhoneNumber) VALUES (@FullName,@VoterID,@Occupation,@DateOfBirth,@PhoneNumber)";
 
             // 
             //string query = "INSERT INTO RESERVEDEMO (FullName, VoterID,Occupation,DateOfBirth, PhoneNumber) VALUES ('" + fullNameTextBox.Text + "','" + voterIDTextBox.Text + "','" + ocuupationTextBox.Text + "','" + dateOfBirthPicker.Text + "','" + phoneNumberTextBox.Text + "')";
@@ -198,19 +206,77 @@ namespace View
             cmd.Parameters.AddWithValue("@FullName", fullNameTextBox.Text);
             cmd.Parameters.AddWithValue("@VoterID", voterIDTextBox.Text);
             cmd.Parameters.AddWithValue("@Occupation", ocuupationTextBox.Text);
-            cmd.Parameters.AddWithValue("@DateOfBirth", dateOfBirthPicker.Text);
+            cmd.Parameters.AddWithValue("@DateOfBirth", dateOfBirthPicker.Value.Date);
             cmd.Parameters.AddWithValue("@PhoneNumber", phoneNumberTextBox.Text);
 
             var check = cmd.ExecuteNonQuery();
 
 
             conn.Close();
+           
 
         }
 
         private void gridOrders_SelectedIndexChanged(object sender, EventArgs e)
         {
+            try
+            {
+                if (gridOrders.SelectedItems.Count > 0)
+                {
 
+                    fullNameTextBox.Text = gridOrders.SelectedItems[0].Tag.ToString();
+                    
+                    MessageBox.Show("selected item is "+ fullNameTextBox.Text);
+                    
+
+                }
+            }
+            catch { }
+        }
+        
+
+        private void updataButton_Click(object sender, EventArgs e)
+        {
+            if (fullNameTextBox.Text != "" && voterIDTextBox.Text != "")
+            {
+                SqlCommand cmd = new SqlCommand("update Reservedemo set Fullname=@FullName,VoterID=@VoterID,Occupation=@Occupation, DateOfBirth=@DateOfBirth,PhoneNumber=@PhoneNumber where FullName=@FullName", conn);
+                conn.Open();
+                //to show it on the boxes
+                gridOrders.SelectedItems[0].SubItems[0].Text = fullNameTextBox.Text;
+                gridOrders.SelectedItems[0].SubItems[1].Text = voterIDTextBox.Text;
+                gridOrders.SelectedItems[0].SubItems[2].Text = dateOfBirthPicker.Value.Date.ToString();
+                gridOrders.SelectedItems[0].SubItems[3].Text = phoneNumberTextBox.Text;
+
+
+
+
+
+                cmd.Parameters.AddWithValue("@id", VoterID);
+                Console.WriteLine("@id");
+                cmd.Parameters.AddWithValue("@FullName", fullNameTextBox.Text);
+                cmd.Parameters.AddWithValue("@VoterID", voterIDTextBox.Text);
+                cmd.Parameters.AddWithValue("@Occupation", ocuupationTextBox.Text);
+                cmd.Parameters.AddWithValue("@DateOfBirth", DateTime.ParseExact(dateOfBirthPicker.Text, "MM/dd/yyyy", null));
+                cmd.Parameters.AddWithValue("@PhoneNumber", phoneNumberTextBox.Text);
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Record Updated Successfully");
+                conn.Close();
+                DisplayData();
+               
+            }
+            else
+            {
+                MessageBox.Show("Please Select Record to Update");
+            }
+        }
+
+        private void gridOrders_MouseClick(object sender, MouseEventArgs e)
+        {
+            fullNameTextBox.Text = gridOrders.SelectedItems[0].SubItems[0].Text;
+            voterIDTextBox.Text = gridOrders.SelectedItems[0].SubItems[1].Text;
+            //dateOfBirthPicker.Text = gridOrders.SelectedItems[0].SubItems[2].Text;
+            dateOfBirthPicker.Text = gridOrders.SelectedItems[0].SubItems[2].Text;
+            phoneNumberTextBox.Text = gridOrders.SelectedItems[0].SubItems[3].Text;
         }
     }
 }

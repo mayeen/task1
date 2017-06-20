@@ -15,6 +15,7 @@ namespace Controller
         IList _users;
         Data _selectedUser;
 
+
         public UserController(IUserView view, IList users)
         {
             _view = view;
@@ -38,8 +39,10 @@ namespace Controller
         public void LoadView()
         {
             _view.ClearGrid();
+            _view.DisplayData();
             foreach (Data usr in _users)
                 _view.AddUserToGrid(usr);
+            
 
         }
 

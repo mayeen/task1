@@ -40,6 +40,8 @@
             this.dateOfBirthPicker = new System.Windows.Forms.DateTimePicker();
             this.gridOrders = new System.Windows.Forms.ListView();
             this.submitButton = new System.Windows.Forms.Button();
+            this.updataButton = new System.Windows.Forms.Button();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fullNameLabel
@@ -121,6 +123,8 @@
             // 
             // dateOfBirthPicker
             // 
+            this.dateOfBirthPicker.CustomFormat = "dd-MM-yyyy";
+            this.dateOfBirthPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateOfBirthPicker.Location = new System.Drawing.Point(310, 83);
             this.dateOfBirthPicker.Name = "dateOfBirthPicker";
             this.dateOfBirthPicker.Size = new System.Drawing.Size(200, 20);
@@ -137,6 +141,7 @@
             this.gridOrders.UseCompatibleStateImageBehavior = false;
             this.gridOrders.View = System.Windows.Forms.View.Details;
             this.gridOrders.SelectedIndexChanged += new System.EventHandler(this.gridOrders_SelectedIndexChanged);
+            this.gridOrders.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gridOrders_MouseClick);
             // 
             // submitButton
             // 
@@ -148,11 +153,32 @@
             this.submitButton.UseVisualStyleBackColor = true;
             this.submitButton.Click += new System.EventHandler(this.submitButton_Click);
             // 
+            // updataButton
+            // 
+            this.updataButton.Location = new System.Drawing.Point(542, 169);
+            this.updataButton.Name = "updataButton";
+            this.updataButton.Size = new System.Drawing.Size(81, 30);
+            this.updataButton.TabIndex = 13;
+            this.updataButton.Text = "Update";
+            this.updataButton.UseVisualStyleBackColor = true;
+            this.updataButton.Click += new System.EventHandler(this.updataButton_Click);
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Location = new System.Drawing.Point(647, 169);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(81, 30);
+            this.deleteButton.TabIndex = 14;
+            this.deleteButton.Text = "Delete";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            // 
             // UserView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(755, 467);
+            this.Controls.Add(this.deleteButton);
+            this.Controls.Add(this.updataButton);
             this.Controls.Add(this.submitButton);
             this.Controls.Add(this.gridOrders);
             this.Controls.Add(this.dateOfBirthPicker);
@@ -187,5 +213,7 @@
         private System.Windows.Forms.DateTimePicker dateOfBirthPicker;
         private System.Windows.Forms.Button submitButton;
         internal System.Windows.Forms.ListView gridOrders;
+        private System.Windows.Forms.Button updataButton;
+        private System.Windows.Forms.Button deleteButton;
     }
 }
