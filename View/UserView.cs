@@ -84,12 +84,12 @@ namespace View
         {
             get
             {
-                return this.ocuupationTextBox.Text;
+                return this.occupationTextBox.Text;
             }
 
             set
             {
-                this.ocuupationTextBox.Text=value;
+                this.occupationTextBox.Text=value;
             }
         }
 
@@ -141,13 +141,14 @@ namespace View
             parent.SubItems.Add(user.DateOfBirth);
             parent.SubItems.Add(user.PhoneNumber);
             DisplayData();
+            
         }
         //Display Data in DataGridView  
         public void DisplayData()
         {
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT FullName, VoterID, Occupation, DateOfBirth, PhoneNumber FROM Reservedemos", conn);
+            SqlCommand cmd = new SqlCommand("SELECT CustomerID, FullName, VoterID, Occupation, DateOfBirth, PhoneNumber FROM Reservedemos", conn);
             SqlDataReader objRead = cmd.ExecuteReader();
             this.gridOrders.Items.Clear();
             while (objRead.Read())
@@ -158,6 +159,10 @@ namespace View
                 parent.SubItems.Add(objRead["Occupation"].ToString());
                 parent.SubItems.Add(objRead["DateOfBirth"].ToString());
                 parent.SubItems.Add(objRead["PhoneNumber"].ToString());
+                parent.Tag = Convert.ToInt32(objRead["CustomerID"]);
+                
+               // MessageBox.Show(parent.Tag.ToString());
+
             }
 
                 conn.Close();
@@ -205,15 +210,15 @@ namespace View
 
             cmd.Parameters.AddWithValue("@FullName", fullNameTextBox.Text);
             cmd.Parameters.AddWithValue("@VoterID", voterIDTextBox.Text);
-            cmd.Parameters.AddWithValue("@Occupation", ocuupationTextBox.Text);
+            cmd.Parameters.AddWithValue("@Occupation", occupationTextBox.Text);
             cmd.Parameters.AddWithValue("@DateOfBirth", dateOfBirthPicker.Value.Date);
             cmd.Parameters.AddWithValue("@PhoneNumber", phoneNumberTextBox.Text);
 
             var check = cmd.ExecuteNonQuery();
-
+           
 
             conn.Close();
-           
+            DisplayData();
 
         }
 
@@ -226,7 +231,7 @@ namespace View
 
                     fullNameTextBox.Text = gridOrders.SelectedItems[0].Tag.ToString();
                     
-                    MessageBox.Show("selected item is "+ fullNameTextBox.Text);
+                   //MessageBox.Show("selected item is "+ fullNameTextBox.Text);
                     
 
                 }
@@ -239,24 +244,27 @@ namespace View
         {
             if (fullNameTextBox.Text != "" && voterIDTextBox.Text != "")
             {
-                SqlCommand cmd = new SqlCommand("update Reservedemo set Fullname=@FullName,VoterID=@VoterID,Occupation=@Occupation, DateOfBirth=@DateOfBirth,PhoneNumber=@PhoneNumber where FullName=@FullName", conn);
+                SqlCommand cmd = new SqlCommand("update Reservedemos set Fullname=@FullName,VoterID=@VoterID,Occupation=@Occupation, DateOfBirth=@DateOfBirth,PhoneNumber=@PhoneNumber where CustomerID=@ID", conn);
                 conn.Open();
                 //to show it on the boxes
                 gridOrders.SelectedItems[0].SubItems[0].Text = fullNameTextBox.Text;
                 gridOrders.SelectedItems[0].SubItems[1].Text = voterIDTextBox.Text;
-                gridOrders.SelectedItems[0].SubItems[2].Text = dateOfBirthPicker.Value.Date.ToString();
-                gridOrders.SelectedItems[0].SubItems[3].Text = phoneNumberTextBox.Text;
+                gridOrders.SelectedItems[0].SubItems[2].Text = occupationTextBox.Text;
+                gridOrders.SelectedItems[0].SubItems[3].Text = dateOfBirthPicker.Value.Date.ToString();
+                gridOrders.SelectedItems[0].SubItems[4].Text = phoneNumberTextBox.Text;
+
+                int ID = (int)gridOrders.SelectedItems[0].Tag;
+              //  MessageBox.Show(ID.ToString());
 
 
 
 
-
-                cmd.Parameters.AddWithValue("@id", VoterID);
-                Console.WriteLine("@id");
+                cmd.Parameters.AddWithValue("@ID", ID);
+               // MessageBox.Show("@ID");
                 cmd.Parameters.AddWithValue("@FullName", fullNameTextBox.Text);
                 cmd.Parameters.AddWithValue("@VoterID", voterIDTextBox.Text);
-                cmd.Parameters.AddWithValue("@Occupation", ocuupationTextBox.Text);
-                cmd.Parameters.AddWithValue("@DateOfBirth", DateTime.ParseExact(dateOfBirthPicker.Text, "MM/dd/yyyy", null));
+                cmd.Parameters.AddWithValue("@Occupation", occupationTextBox.Text);
+                cmd.Parameters.AddWithValue("@DateOfBirth", dateOfBirthPicker.Value.Date);
                 cmd.Parameters.AddWithValue("@PhoneNumber", phoneNumberTextBox.Text);
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Record Updated Successfully");
@@ -274,9 +282,54 @@ namespace View
         {
             fullNameTextBox.Text = gridOrders.SelectedItems[0].SubItems[0].Text;
             voterIDTextBox.Text = gridOrders.SelectedItems[0].SubItems[1].Text;
-            //dateOfBirthPicker.Text = gridOrders.SelectedItems[0].SubItems[2].Text;
-            dateOfBirthPicker.Text = gridOrders.SelectedItems[0].SubItems[2].Text;
-            phoneNumberTextBox.Text = gridOrders.SelectedItems[0].SubItems[3].Text;
+            occupationTextBox.Text = gridOrders.SelectedItems[0].SubItems[2].Text;
+           // dateOfBirthPicker.Text = DateTime.ParseExact(gridOrders.SelectedItems[0].SubItems[3].Text, "MM/dd/yyyy", null);
+            
+              //  dateOfBirthPicker.Value.Date.ToString = gridOrders.SelectedItems[0].SubItems[2].Text;
+              //  DateTime dt = Convert.ToDateTime(gridOrders.SelectedItems[0].SubItems[2].Text);
+              //  dateOfBirthPicker.Text = dt.ToString();
+              phoneNumberTextBox.Text = gridOrders.SelectedItems[0].SubItems[4].Text;
+          // MessageBox.Show( Parent.Tag.ToString());
+           
+
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            if (fullNameTextBox.Text != "" && voterIDTextBox.Text != "")
+            {
+                SqlCommand cmd = new SqlCommand("delete Reservedemos where CustomerID=@ID", conn);
+                conn.Open();
+                //to show it on the boxes
+                gridOrders.SelectedItems[0].SubItems[0].Text = fullNameTextBox.Text;
+                gridOrders.SelectedItems[0].SubItems[1].Text = voterIDTextBox.Text;
+                gridOrders.SelectedItems[0].SubItems[2].Text = occupationTextBox.Text;
+                gridOrders.SelectedItems[0].SubItems[3].Text = dateOfBirthPicker.Value.Date.ToString();
+                gridOrders.SelectedItems[0].SubItems[4].Text = phoneNumberTextBox.Text;
+
+                int ID = (int)gridOrders.SelectedItems[0].Tag;
+                //  MessageBox.Show(ID.ToString());
+
+
+
+
+                cmd.Parameters.AddWithValue("@ID", ID);
+                // MessageBox.Show("@ID");
+                cmd.Parameters.AddWithValue("@FullName", fullNameTextBox.Text);
+                cmd.Parameters.AddWithValue("@VoterID", voterIDTextBox.Text);
+                cmd.Parameters.AddWithValue("@Occupation", occupationTextBox.Text);
+                cmd.Parameters.AddWithValue("@DateOfBirth", dateOfBirthPicker.Value.Date);
+                cmd.Parameters.AddWithValue("@PhoneNumber", phoneNumberTextBox.Text);
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Record Delete Successfully");
+                conn.Close();
+                DisplayData();
+
+            }
+            else
+            {
+                MessageBox.Show("Please Select Record to delete");
+            }
         }
     }
 }

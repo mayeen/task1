@@ -36,7 +36,7 @@
             this.fullNameTextBox = new System.Windows.Forms.TextBox();
             this.voterIDTextBox = new System.Windows.Forms.TextBox();
             this.phoneNumberTextBox = new System.Windows.Forms.TextBox();
-            this.ocuupationTextBox = new System.Windows.Forms.TextBox();
+            this.occupationTextBox = new System.Windows.Forms.TextBox();
             this.dateOfBirthPicker = new System.Windows.Forms.DateTimePicker();
             this.gridOrders = new System.Windows.Forms.ListView();
             this.submitButton = new System.Windows.Forms.Button();
@@ -113,13 +113,13 @@
             this.phoneNumberTextBox.TabIndex = 7;
             this.phoneNumberTextBox.Text = "Phone Number ";
             // 
-            // ocuupationTextBox
+            // occupationTextBox
             // 
-            this.ocuupationTextBox.Location = new System.Drawing.Point(48, 244);
-            this.ocuupationTextBox.Name = "ocuupationTextBox";
-            this.ocuupationTextBox.Size = new System.Drawing.Size(100, 20);
-            this.ocuupationTextBox.TabIndex = 9;
-            this.ocuupationTextBox.Text = "Ocuupation";
+            this.occupationTextBox.Location = new System.Drawing.Point(48, 244);
+            this.occupationTextBox.Name = "occupationTextBox";
+            this.occupationTextBox.Size = new System.Drawing.Size(100, 20);
+            this.occupationTextBox.TabIndex = 9;
+            this.occupationTextBox.Text = "Occupation";
             // 
             // dateOfBirthPicker
             // 
@@ -171,6 +171,7 @@
             this.deleteButton.TabIndex = 14;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
             // UserView
             // 
@@ -182,7 +183,7 @@
             this.Controls.Add(this.submitButton);
             this.Controls.Add(this.gridOrders);
             this.Controls.Add(this.dateOfBirthPicker);
-            this.Controls.Add(this.ocuupationTextBox);
+            this.Controls.Add(this.occupationTextBox);
             this.Controls.Add(this.phoneNumberTextBox);
             this.Controls.Add(this.voterIDTextBox);
             this.Controls.Add(this.fullNameTextBox);
@@ -209,7 +210,7 @@
         private System.Windows.Forms.TextBox fullNameTextBox;
         private System.Windows.Forms.TextBox voterIDTextBox;
         private System.Windows.Forms.TextBox phoneNumberTextBox;
-        private System.Windows.Forms.TextBox ocuupationTextBox;
+        private System.Windows.Forms.TextBox occupationTextBox;
         private System.Windows.Forms.DateTimePicker dateOfBirthPicker;
         private System.Windows.Forms.Button submitButton;
         internal System.Windows.Forms.ListView gridOrders;
